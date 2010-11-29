@@ -6,7 +6,7 @@ use parent qw(Exporter Digest::base);
 
 use MIME::Base64 ();
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 $VERSION = eval $VERSION;
 
 eval {
@@ -24,33 +24,6 @@ our @EXPORT_OK = qw(
     echo_384 echo_384_hex echo_384_base64
     echo_512 echo_512_hex echo_512_base64
 );
-
-# TODO: convert to C.
-sub echo_224_hex  { unpack 'H*', echo_224(@_) }
-sub echo_256_hex  { unpack 'H*', echo_256(@_) }
-sub echo_384_hex  { unpack 'H*', echo_384(@_) }
-sub echo_512_hex  { unpack 'H*', echo_512(@_) }
-
-sub echo_224_base64 {
-    my $b64 = MIME::Base64::encode(echo_224(@_), '');
-    $b64 =~ s/=+$//g;
-    return $b64;
-}
-sub echo_256_base64 {
-    my $b64 = MIME::Base64::encode(echo_256(@_), '');
-    $b64 =~ s/=+$//g;
-    return $b64;
-}
-sub echo_384_base64 {
-    my $b64 = MIME::Base64::encode(echo_384(@_), '');
-    $b64 =~ s/=+$//g;
-    return $b64;
-}
-sub echo_512_base64 {
-    my $b64 = MIME::Base64::encode(echo_512(@_), '');
-    $b64 =~ s/=+$//g;
-    return $b64;
-}
 
 sub add_bits {
     my ($self, $data, $bits) = @_;
@@ -75,8 +48,8 @@ Digest::ECHO - Perl interface to the ECHO digest algorithm
     use Digest::ECHO qw(echo_256 echo_256_hex echo_256_base64);
 
     $digest = echo_256($data);
-    $digest = echo_hex_256($data);
-    $digest = echo_base64_256($data);
+    $digest = echo_256_hex($data);
+    $digest = echo_256_base64($data);
 
     # Object-oriented interface
     use Digest::ECHO;
@@ -156,6 +129,8 @@ Returns the algorithm used by the object.
 =head1 SEE ALSO
 
 L<Digest>
+
+L<Task::Digest>
 
 L<http://crypto.rd.francetelecom.com/echo/>
 
